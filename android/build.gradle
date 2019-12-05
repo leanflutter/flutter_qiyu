@@ -1,0 +1,40 @@
+group 'org.blankapp.flutterplugins.flutter_qiyu'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 16
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+}
+
+dependencies {
+    implementation 'com.qiyukf.unicorn:unicorn:+'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+//    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+}
