@@ -5,12 +5,13 @@
 
 @implementation FlutterQiyuPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  FlutterMethodChannel* channel = [FlutterMethodChannel
-      methodChannelWithName:@"flutter_qiyu"
-            binaryMessenger:[registrar messenger]];
-  UIViewController *viewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-  FlutterQiyuPlugin* instance = [[FlutterQiyuPlugin alloc] initWithViewController:viewController];
-  [registrar addMethodCallDelegate:instance channel:channel];
+    FlutterMethodChannel* channel = [FlutterMethodChannel
+                                     methodChannelWithName:@"flutter_qiyu"
+                                     binaryMessenger:[registrar messenger]];
+    UIViewController *viewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+    FlutterQiyuPlugin* instance = [[FlutterQiyuPlugin alloc] initWithViewController:viewController];
+    [registrar addMethodCallDelegate:instance channel:channel];
+    [registrar addApplicationDelegate:instance];
 }
 
 - (instancetype)initWithViewController:(UIViewController *)viewController {
@@ -83,7 +84,8 @@
         NSDictionary *commodityInfoDict = [paramDict objectForKey:@"commodityInfo"];
         if ([commodityInfoDict objectForKey:@"commodityInfoTitle"] || [commodityInfoDict objectForKey:@"commodityInfoDesc"]
             || [commodityInfoDict objectForKey:@"pictureUrl"] || [commodityInfoDict objectForKey:@"commodityInfoUrl"]
-            || [commodityInfoDict objectForKey:@"note"] || [commodityInfoDict objectForKey:@"show"]) {
+            || [commodityInfoDict objectForKey:@"note"] || [commodityInfoDict objectForKey:@"show"]
+            || [commodityInfoDict objectForKey:@"sendByUser"]) {
             commodityInfo = [[QYCommodityInfo alloc] init];
             if ([commodityInfoDict objectForKey:@"commodityInfoTitle"]) {
                 commodityInfo.title = [commodityInfoDict objectForKey:@"commodityInfoTitle"];
@@ -102,6 +104,9 @@
             }
             if ([commodityInfoDict objectForKey:@"show"]) {
                 commodityInfo.show = [[commodityInfoDict objectForKey:@"show"] boolValue];
+            }
+            if ([commodityInfoDict objectForKey:@"sendByUser"]) {
+                commodityInfo.sendByUser = [[commodityInfoDict objectForKey:@"sendByUser"] boolValue];
             }
         }
     }
@@ -304,6 +309,12 @@
     }
     
     return nil;
+}
+
+- (void)application:(UIApplication *)app
+                didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    [[QYSDK sharedSDK] updateApnsToken:deviceToken];
 }
 
 @end

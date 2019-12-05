@@ -47,18 +47,29 @@ class QYServiceWindowParams {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'source': source != null ? source.toJson() : null,
-      'commodityInfo': source != null ? commodityInfo.toJson() : null,
-      'sessionTitle': sessionTitle,
-      'groupId': groupId,
-      'staffId': staffId,
-      'robotId': robotId,
-      'robotFirst': robotFirst,
-      'faqTemplateId': faqTemplateId,
-      'vipLevel': vipLevel,
-      'showQuitQueue': showQuitQueue,
-      'showCloseSessionEntry': showCloseSessionEntry,
-    };
+    Map<String, dynamic> json = new Map();
+    if (source != null)
+      json.putIfAbsent('source', () => source.toJson());
+    if (commodityInfo != null)
+      json.putIfAbsent('commodityInfo', () => commodityInfo.toJson());
+    if (sessionTitle != null)
+      json.putIfAbsent('sessionTitle', () => sessionTitle);
+    if (groupId != null)
+      json.putIfAbsent('groupId', () => groupId);
+    if (staffId != null)
+      json.putIfAbsent('staffId', () => staffId);
+    if (robotId != null)
+      json.putIfAbsent('robotId', () => robotId);
+    if (robotFirst != null)
+      json.putIfAbsent('robotFirst', () => robotFirst);
+    if (faqTemplateId != null)
+      json.putIfAbsent('faqTemplateId', () => faqTemplateId);
+    if (vipLevel != null)
+      json.putIfAbsent('vipLevel', () => vipLevel);
+    if (showQuitQueue != null)
+      json.putIfAbsent('showQuitQueue', () => showQuitQueue);
+    if (showCloseSessionEntry != null)
+      json.putIfAbsent('showCloseSessionEntry', () => showCloseSessionEntry);
+    return json;
   }
 }

@@ -113,6 +113,10 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
             boolean show = false;
             if (commodityInfoMap.containsKey("show"))
                 show = (boolean) commodityInfoMap.get("show");
+            boolean sendByUser = false;
+            if (commodityInfoMap.containsKey("sendByUser"))
+                sendByUser = (boolean) commodityInfoMap.get("sendByUser");
+
             productDetail = new ProductDetail.Builder()
                     .setTitle(commodityInfoTitle)
                     .setDesc(commodityInfoDesc)
@@ -120,6 +124,7 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
                     .setUrl(commodityInfoUrl)
                     .setNote(note)
                     .setShow(show ? 1 : 0)
+                    .setSendByUser(sendByUser)
                     .build();
         }
 
