@@ -7,7 +7,6 @@ import android.net.Uri;
 
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.OnBotEventListener;
-import com.qiyukf.unicorn.api.OnMessageItemClickListener;
 import com.qiyukf.unicorn.api.ProductDetail;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
@@ -17,6 +16,7 @@ import com.qiyukf.unicorn.api.YSFOptions;
 import com.qiyukf.unicorn.api.YSFUserInfo;
 import com.qiyukf.unicorn.api.lifecycle.SessionLifeCycleOptions;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import io.flutter.plugin.common.MethodCall;
@@ -35,17 +35,28 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
      */
     public static void registerWith(Registrar registrar) {
         final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_qiyu");
-        channel.setMethodCallHandler(new FlutterQiyuPlugin(registrar.activity()));
+        final FlutterQiyuPlugin instance = new FlutterQiyuPlugin(registrar.activity(), new UnreadCountChangeListener() {
+            @Override
+            public void onUnreadCountChange(int count) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("unreadCount", count);
+
+                channel.invokeMethod("onUnreadCountChange", map);
+            }
+        });
+
+        channel.setMethodCallHandler(instance);
     }
 
     private final Activity currentActivity;
 
     private YSFOptions ysfOptions;
-    private UnreadChangeListener unreadChangeListener;
+    private UnreadCountChangeListener unreadCountChangeListener;
 
 
-    public FlutterQiyuPlugin(Activity currentActivity) {
+    public FlutterQiyuPlugin(Activity currentActivity, UnreadCountChangeListener unreadCountChangeListener) {
         this.currentActivity = currentActivity;
+        this.unreadCountChangeListener = unreadCountChangeListener;
     }
 
     @Override
@@ -95,6 +106,7 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
         }
 
         Unicorn.init(this.currentActivity, appKey, ysfOptions, new GlideImageLoader(this.currentActivity));
+        Unicorn.addUnreadCountChangeListener(unreadCountChangeListener, true);
     }
 
     public void openServiceWindow(MethodCall call) {
@@ -230,22 +242,10 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
         uiCustomization.hideKeyboardOnEnterConsult = !autoShowKeyboard;
     }
 
-    public void setUrlClickWithEventName(String eventName) {
-        ysfOptions.onMessageItemClickListener = new MessageClickListener(currentActivity, eventName);
-    }
-
-    public void setUnreadCountWithEventName(String eventName) {
-        if (unreadChangeListener != null) {
-            Unicorn.addUnreadCountChangeListener(unreadChangeListener, false);
-        }
-        unreadChangeListener = new UnreadChangeListener(currentActivity, eventName);
-        Unicorn.addUnreadCountChangeListener(unreadChangeListener, true);
-    }
-
     public void getUnreadCount(MethodCall call, Result result) {
         int count = Unicorn.getUnreadCount();
 
-        result.success(String.valueOf(count));
+        result.success(count);
     }
 
     public void setUserInfo(MethodCall call) {
@@ -264,39 +264,4 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
     public void cleanCache() {
         Unicorn.clearCache();
     }
-
-    private static class MessageClickListener implements OnMessageItemClickListener {
-        private Context context;
-        private String eventName;
-
-        public MessageClickListener(Context context, String eventName) {
-            this.context = context;
-            this.eventName = eventName;
-        }
-
-        @Override
-        public void onURLClicked(Context context, String url) {
-//            WritableMap params = Arguments.createMap();
-//            params.putString("url", url);
-//            sendEvent(reactContext, eventName, params);
-        }
-    }
-
-    private static class UnreadChangeListener implements UnreadCountChangeListener {
-        private Context context;
-        private String eventName;
-
-        public UnreadChangeListener(Context context, String eventName) {
-            this.context = context;
-            this.eventName = eventName;
-        }
-
-        @Override
-        public void onUnreadCountChange(int count) {
-//            WritableMap params = Arguments.createMap();
-//            params.putInt("unreadCount", count);
-//            sendEvent(reactContext, eventName, params);
-        }
-    }
-
 }

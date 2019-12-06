@@ -3,6 +3,9 @@
 #import "FlutterQiyuPlugin.h"
 #import "UIBarButtonItem+blocks.h"
 
+@interface FlutterQiyuPlugin () <QYConversationManagerDelegate>
+@end
+
 @implementation FlutterQiyuPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     FlutterMethodChannel* channel = [FlutterMethodChannel
@@ -12,6 +15,13 @@
     FlutterQiyuPlugin* instance = [[FlutterQiyuPlugin alloc] initWithViewController:viewController];
     [registrar addMethodCallDelegate:instance channel:channel];
     [registrar addApplicationDelegate:instance];
+    
+    instance.channel = channel;
+
+    [[[QYSDK sharedSDK] conversationManager] setDelegate:instance];
+    [[QYSDK sharedSDK] registerPushMessageNotification:^(QYPushMessage *message) {
+        // TODO:
+    }];
 }
 
 - (instancetype)initWithViewController:(UIViewController *)viewController {
@@ -38,8 +48,8 @@
         [self setCustomUIConfig:options];
         result([NSNumber numberWithBool:YES]);
     } else if ([@"getUnreadCount" isEqualToString:call.method]) {
-        NSString* unreadCount = [self getUnreadCount];
-        result(unreadCount);
+        NSInteger* unreadCount = [self getUnreadCount];
+        result([NSNumber numberWithInteger:unreadCount]);
     } else if ([@"setUserInfo" isEqualToString:call.method]) {
         [self setUserInfo:options];
         result([NSNumber numberWithBool:YES]);
@@ -247,11 +257,10 @@
 //    }
 }
 
-- (NSString *)getUnreadCount
+- (NSInteger *)getUnreadCount
 {
     NSInteger count = [[[QYSDK sharedSDK] conversationManager] allUnreadCount];
-    NSString *allUnreadCount = [NSString stringWithFormat:@"%ld", (long)count];
-    return allUnreadCount;
+    return count;
 }
 
 - (void)setUserInfo:(NSDictionary *)options
@@ -319,6 +328,11 @@
     }
     
     return nil;
+}
+
+- (void)onUnreadCountChanged:(NSInteger)count
+{
+    [_channel invokeMethod:@"onUnreadCountChange" arguments: @{@"unreadCount": [NSNumber numberWithInteger:count]}];
 }
 
 - (void)application:(UIApplication *)app
