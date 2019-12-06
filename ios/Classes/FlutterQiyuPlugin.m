@@ -37,6 +37,9 @@
     } else if ([@"setCustomUIConfig" isEqualToString:call.method]) {
         [self setCustomUIConfig:options];
         result([NSNumber numberWithBool:YES]);
+    } else if ([@"getUnreadCount" isEqualToString:call.method]) {
+        NSString* unreadCount = [self getUnreadCount];
+        result(unreadCount);
     } else if ([@"setUserInfo" isEqualToString:call.method]) {
         [self setUserInfo:options];
         result([NSNumber numberWithBool:YES]);
@@ -242,6 +245,13 @@
 //    if ([paramDict objectForKey:@"showCloseSessionEntry"]) {
 //        [[QYSDK sharedSDK] customUIConfig].showCloseSessionEntry = [RCTConvert BOOL:[paramDict objectForKey:@"showCloseSessionEntry"]];
 //    }
+}
+
+- (NSString *)getUnreadCount
+{
+    NSInteger count = [[[QYSDK sharedSDK] conversationManager] allUnreadCount];
+    NSString *allUnreadCount = [NSString stringWithFormat:@"%ld", (long)count];
+    return allUnreadCount;
 }
 
 - (void)setUserInfo:(NSDictionary *)options

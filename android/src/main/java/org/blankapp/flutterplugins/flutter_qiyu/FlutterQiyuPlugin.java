@@ -64,6 +64,8 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
         } else if (call.method.equals("setCustomUIConfig")) {
             this.setCustomUIConfig(call);
             result.success(true);
+        } else if (call.method.equals("getUnreadCount")) {
+            this.getUnreadCount(call, result);
         } else if (call.method.equals("setUserInfo")) {
             this.setUserInfo(call);
         } else if (call.method.equals("logout")) {
@@ -240,10 +242,11 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
         Unicorn.addUnreadCountChangeListener(unreadChangeListener, true);
     }
 
-//    public void getUnreadCountCallback(Callback callback) {
-//        int count = Unicorn.getUnreadCount();
-//        callback.invoke(String.valueOf(count));
-//    }
+    public void getUnreadCount(MethodCall call, Result result) {
+        int count = Unicorn.getUnreadCount();
+
+        result.success(String.valueOf(count));
+    }
 
     public void setUserInfo(MethodCall call) {
         String userId = call.argument("userId");

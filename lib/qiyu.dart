@@ -18,12 +18,17 @@ class QiYu {
   static Future<bool> openServiceWindow(QYServiceWindowParams params) async {
     return await _channel.invokeMethod('openServiceWindow', params.toJson());
   }
-  static Future<bool> setUserInfo(QYUserInfoParams params) async {
-    return await _channel.invokeMethod('setUserInfo', params.toJson());
-  }
 
   static Future<bool> setCustomUIConfig(Map params) async {
     return await _channel.invokeMethod('setCustomUIConfig', params);
+  }
+
+  static Future<String> getUnreadCount() async {
+    return await _channel.invokeMethod('getUnreadCount', {});
+  }
+
+  static Future<bool> setUserInfo(QYUserInfoParams params) async {
+    return await _channel.invokeMethod('setUserInfo', params.toJson());
   }
 
   static Future<bool> logout() async {
