@@ -157,6 +157,7 @@
 
     UINavigationController *rootNavigationController = [[UINavigationController alloc] initWithRootViewController:sessionVC];
     [rootNavigationController setNavigationBarHidden:YES];
+    rootNavigationController.modalPresentationStyle = UIModalPresentationFullScreen;
 
     [self.viewController presentViewController:rootNavigationController animated:YES completion:nil];
 }
