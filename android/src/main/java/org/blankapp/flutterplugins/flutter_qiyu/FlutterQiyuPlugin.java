@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.OnBotEventListener;
 import com.qiyukf.unicorn.api.ProductDetail;
-import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.UnreadCountChangeListener;
