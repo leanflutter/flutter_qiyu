@@ -4,7 +4,14 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_qiyu/flutter_qiyu.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  QiYu.registerApp(
+    appKey: '<appKey>',
+    appName: 'qiyu example',
+  );
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -21,8 +28,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initQiYuSDK() async {
     QiYu.registerApp(
-      appKey: '<AppKey>', 
-      appName: '<AppName>',
+      appKey: '<appKey>',
+      appName: 'qiyu example',
     );
   }
 
@@ -39,7 +46,15 @@ class _MyAppState extends State<MyApp> {
               FlatButton(
                 child: Text('联系客服'),
                 onPressed: () {
-                  QYServiceWindowParams serviceWindowParams = QYServiceWindowParams.fromJson({
+                  QYUserInfoParams userInfoParams = QYUserInfoParams.fromJson({
+                    'userId': 'uid10101010',
+                    'data':
+                        '[{\"key\":\"real_name\", \"value\":\"土豪\"},{\"key\":\"mobile_phone\", \"hidden\":true},{\"key\":\"email\", \"value\":\"13800000000@163.com\"},{\"index\":0, \"key\":\"account\", \"label\":\"账号\", \"value\":\"zhangsan\", \"href\":\"http://example.domain/user/zhangsan\"},{\"index\":1, \"key\":\"sex\", \"label\":\"性别\", \"value\":\"先生\"},{\"index\":5, \"key\":\"reg_date\", \"label\":\"注册日期\", \"value\":\"2015-11-16\"},{\"index\":6, \"key\":\"last_login\", \"label\":\"上次登录时间\", \"value\":\"2015-12-22 15:38:54\"}]'
+                  });
+                  QiYu.setUserInfo(userInfoParams);
+
+                  QYServiceWindowParams serviceWindowParams =
+                      QYServiceWindowParams.fromJson({
                     'source': {
                       'sourceTitle': '网易七鱼ReactNative',
                       'sourceUrl': 'http://www.qiyukf.com',
@@ -48,7 +63,8 @@ class _MyAppState extends State<MyApp> {
                     'commodityInfo': {
                       'commodityInfoTitle': 'ReactNative商品',
                       'commodityInfoDesc': '这是来自网易七鱼ReactNative的商品描述',
-                      'pictureUrl': 'http://qiyukf.com/res/img/companyLogo/blmn.png',
+                      'pictureUrl':
+                          'http://qiyukf.com/res/img/companyLogo/blmn.png',
                       'commodityInfoUrl': 'http://www.qiyukf.com',
                       'note': '￥1000',
                       'show': true
@@ -64,12 +80,6 @@ class _MyAppState extends State<MyApp> {
                     'showCloseSessionEntry': true
                   });
                   QiYu.openServiceWindow(serviceWindowParams);
-
-                  QYUserInfoParams userInfoParams = QYUserInfoParams.fromJson({
-                    'userId':'uid10101010',
-                    'data':'[{\"key\":\"real_name\", \"value\":\"土豪\"},{\"key\":\"mobile_phone\", \"hidden\":true},{\"key\":\"email\", \"value\":\"13800000000@163.com\"},{\"index\":0, \"key\":\"account\", \"label\":\"账号\", \"value\":\"zhangsan\", \"href\":\"http://example.domain/user/zhangsan\"},{\"index\":1, \"key\":\"sex\", \"label\":\"性别\", \"value\":\"先生\"},{\"index\":5, \"key\":\"reg_date\", \"label\":\"注册日期\", \"value\":\"2015-11-16\"},{\"index\":6, \"key\":\"last_login\", \"label\":\"上次登录时间\", \"value\":\"2015-12-22 15:38:54\"}]'
-                  });
-                  QiYu.setUserInfo(userInfoParams);
                 },
               )
             ],

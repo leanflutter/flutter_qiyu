@@ -1,10 +1,13 @@
 package org.blankapp.flutterplugins.flutter_qiyu;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.OnBotEventListener;
@@ -19,6 +22,8 @@ import com.qiyukf.unicorn.api.lifecycle.SessionLifeCycleOptions;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -28,35 +33,60 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 /**
  * FlutterQiyuPlugin
  */
-public class FlutterQiyuPlugin implements MethodCallHandler {
+public class FlutterQiyuPlugin implements FlutterPlugin, MethodCallHandler {
+    private static final String CHANNEL_NAME = "flutter_qiyu";
+
+    public static void initSDK(Context context, String appKey) {
+        YSFOptions ysfOptions = new YSFOptions();
+        ysfOptions.statusBarNotificationConfig = new StatusBarNotificationConfig();
+        ysfOptions.onBotEventListener = new OnBotEventListener() {
+            @Override
+            public boolean onUrlClick(Context context, String url) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                context.startActivity(intent);
+                return true;
+            }
+        };
+        // 如果项目中使用了 Glide 可以通过设置 gifImageLoader 去加载 gif 图片
+        ysfOptions.gifImageLoader = new GlideGifImagerLoader(context);
+
+        Unicorn.init(context.getApplicationContext(), appKey, ysfOptions, new GlideImageLoader(context));
+    }
 
     /**
      * Plugin registration.
      */
     public static void registerWith(Registrar registrar) {
-        final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_qiyu");
-        final FlutterQiyuPlugin instance = new FlutterQiyuPlugin(registrar.activity(), new UnreadCountChangeListener() {
-            @Override
-            public void onUnreadCountChange(int count) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("unreadCount", count);
-
-                channel.invokeMethod("onUnreadCountChange", map);
-            }
-        });
-
-        channel.setMethodCallHandler(instance);
+        final FlutterQiyuPlugin plugin = new FlutterQiyuPlugin();
+        plugin.setupChannel(registrar.messenger(), registrar.activeContext());
     }
 
-    private final Activity currentActivity;
+    /// The MethodChannel that will the communication between Flutter and native Android
+    ///
+    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
+    /// when the Flutter Engine is detached from the Activity
+    private MethodChannel channel;
 
+    private Context context;
     private YSFOptions ysfOptions;
-    private UnreadCountChangeListener unreadCountChangeListener;
+    private UnreadCountChangeListener unreadCountChangeListener = new UnreadCountChangeListener() {
+        @Override
+        public void onUnreadCountChange(int unreadCount) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("unreadCount", unreadCount);
 
+            channel.invokeMethod("onUnreadCountChange", map);
+        }
+    };
 
-    public FlutterQiyuPlugin(Activity currentActivity, UnreadCountChangeListener unreadCountChangeListener) {
-        this.currentActivity = currentActivity;
-        this.unreadCountChangeListener = unreadCountChangeListener;
+    @Override
+    public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+        this.setupChannel(flutterPluginBinding.getBinaryMessenger(), flutterPluginBinding.getApplicationContext());
+    }
+
+    @Override
+    public void onDetachedFromEngine(@NonNull FlutterPlugin.FlutterPluginBinding binding) {
+        this.teardownChannel();
     }
 
     @Override
@@ -92,7 +122,6 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
         if (ysfOptions == null) {
             ysfOptions = new YSFOptions();
             ysfOptions.statusBarNotificationConfig = new StatusBarNotificationConfig();
-//            ysfOptions.statusBarNotificationConfig.notificationSmallIconId = R.drawable.ic_status_bar_notifier;
             ysfOptions.onBotEventListener = new OnBotEventListener() {
                 @Override
                 public boolean onUrlClick(Context context, String url) {
@@ -102,14 +131,14 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
                 }
             };
             // 如果项目中使用了 Glide 可以通过设置 gifImageLoader 去加载 gif 图片
-            ysfOptions.gifImageLoader = new GlideGifImagerLoader(this.currentActivity);
+            ysfOptions.gifImageLoader = new GlideGifImagerLoader(this.context);
         }
 
-        Unicorn.init(this.currentActivity, appKey, ysfOptions, new GlideImageLoader(this.currentActivity));
+        Unicorn.init(this.context.getApplicationContext(), appKey, ysfOptions, new GlideImageLoader(this.context));
         Unicorn.addUnreadCountChangeListener(unreadCountChangeListener, true);
     }
 
-    public void openServiceWindow(MethodCall call) {
+    private void openServiceWindow(MethodCall call) {
         Map sourceMap = call.argument("source");
         Map commodityInfoMap = call.argument("commodityInfo");
 
@@ -170,10 +199,10 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
         source.sessionLifeCycleOptions = new SessionLifeCycleOptions();
         source.sessionLifeCycleOptions.setCanQuitQueue(showQuitQueue);
         source.sessionLifeCycleOptions.setCanCloseSession(showCloseSessionEntry);
-        Unicorn.openServiceActivity(currentActivity, sessionTitle, source);
+        Unicorn.openServiceActivity(context, sessionTitle, source);
     }
 
-    public void setCustomUIConfig(MethodCall call) {
+    private void setCustomUIConfig(MethodCall call) {
         // 会话窗口上方提示条中的文本字体颜色
         String sessionTipTextColor = call.argument("sessionTipTextColor");
         // 会话窗口上方提示条中的文本字体大小
@@ -212,10 +241,10 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
             showAudioEntry = call.argument("showAudioEntry");
         // 显示发送表情入口，设置为false，可以修改为隐藏
         boolean showEmoticonEntry = true;
-            if (call.hasArgument("showEmoticonEntry")) call.argument("showEmoticonEntry");
+        if (call.hasArgument("showEmoticonEntry")) call.argument("showEmoticonEntry");
         // 进入聊天界面，是文本输入模式的话，会弹出键盘，设置为false，可以修改为不弹出
         boolean autoShowKeyboard = true;
-            if (call.hasArgument("autoShowKeyboard ")) call.argument("autoShowKeyboard ");
+        if (call.hasArgument("autoShowKeyboard ")) call.argument("autoShowKeyboard ");
 
         UICustomization uiCustomization = ysfOptions.uiCustomization;
         if (uiCustomization == null) {
@@ -230,10 +259,10 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
         uiCustomization.tipsTextSize = tipMessageTextFontSize;
         uiCustomization.inputTextColor = QiYuUtils.parseColor(inputTextColor);
         uiCustomization.inputTextSize = inputTextFontSize;
-        uiCustomization.msgBackgroundUri = QiYuUtils.getImageUri(currentActivity, sessionBackgroundImage);
+        uiCustomization.msgBackgroundUri = QiYuUtils.getImageUri(this.context, sessionBackgroundImage);
         uiCustomization.topTipBarBackgroundColor = QiYuUtils.parseColor(sessionTipBackgroundColor);
-        uiCustomization.rightAvatar = QiYuUtils.getImageUri(currentActivity, customerHeadImage);
-        uiCustomization.leftAvatar = QiYuUtils.getImageUri(currentActivity, serviceHeadImage);
+        uiCustomization.rightAvatar = QiYuUtils.getImageUri(this.context, customerHeadImage);
+        uiCustomization.leftAvatar = QiYuUtils.getImageUri(this.context, serviceHeadImage);
         uiCustomization.msgListViewDividerHeight = (int) sessionMessageSpacing;
         uiCustomization.hideLeftAvatar = !showHeadImage;
         uiCustomization.hideRightAvatar = !showHeadImage;
@@ -242,26 +271,53 @@ public class FlutterQiyuPlugin implements MethodCallHandler {
         uiCustomization.hideKeyboardOnEnterConsult = !autoShowKeyboard;
     }
 
-    public void getUnreadCount(MethodCall call, Result result) {
+    private void getUnreadCount(MethodCall call, Result result) {
         int count = Unicorn.getUnreadCount();
 
         result.success(count);
     }
 
-    public void setUserInfo(MethodCall call) {
+    private void setUserInfo(MethodCall call) {
         String userId = call.argument("userId");
         String data = call.argument("data");
         YSFUserInfo userInfo = new YSFUserInfo();
         userInfo.userId = userId;
         userInfo.data = data;
-        Unicorn.setUserInfo(userInfo);
+        Unicorn.setUserInfo(userInfo, new RequestCallback<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("FLUTTER_QIYU", "SUCCESS");
+            }
+
+            @Override
+            public void onFailed(int i) {
+                Log.d("FLUTTER_QIYU", "I");
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+
+
+            }
+        });
     }
 
-    public void logout() {
+    private void logout() {
         Unicorn.setUserInfo(null);
     }
 
-    public void cleanCache() {
+    private void cleanCache() {
         Unicorn.clearCache();
+    }
+
+    private void setupChannel(BinaryMessenger messenger, Context context) {
+        this.context = context;
+        this.channel = new MethodChannel(messenger, CHANNEL_NAME);
+        this.channel.setMethodCallHandler(this);
+    }
+
+    private void teardownChannel() {
+        this.channel.setMethodCallHandler(null);
+        this.channel = null;
     }
 }

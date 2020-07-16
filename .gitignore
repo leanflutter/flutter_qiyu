@@ -5,3 +5,9 @@
 .pub/
 
 build/
+
+.project
+.settings
+.classpath
+.metadata
+.idea

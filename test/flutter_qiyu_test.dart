@@ -5,6 +5,8 @@ import 'package:flutter_qiyu/flutter_qiyu.dart';
 void main() {
   const MethodChannel channel = MethodChannel('flutter_qiyu');
 
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   setUp(() {
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
       return '42';
