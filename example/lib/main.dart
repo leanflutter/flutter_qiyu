@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_qiyu/flutter_qiyu.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   QiYu.registerApp(
     appKey: '<appKey>',
     appName: 'qiyu example',
@@ -19,20 +19,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    initQiYuSDK();
-
-    super.initState();
-  }
-
-  Future<void> initQiYuSDK() async {
-    QiYu.registerApp(
-      appKey: '<appKey>',
-      appName: 'qiyu example',
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
