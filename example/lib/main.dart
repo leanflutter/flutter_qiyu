@@ -42,13 +42,13 @@ class _MyAppState extends State<MyApp> {
                   QYServiceWindowParams serviceWindowParams =
                       QYServiceWindowParams.fromJson({
                     'source': {
-                      'sourceTitle': '网易七鱼ReactNative',
+                      'sourceTitle': '网易七鱼Flutter',
                       'sourceUrl': 'http://www.qiyukf.com',
                       'sourceCustomInfo': '我是来自自定义的信息'
                     },
                     'commodityInfo': {
-                      'commodityInfoTitle': 'ReactNative商品',
-                      'commodityInfoDesc': '这是来自网易七鱼ReactNative的商品描述',
+                      'commodityInfoTitle': 'Flutter商品',
+                      'commodityInfoDesc': '这是来自网易七鱼Flutter的商品描述',
                       'pictureUrl':
                           'http://qiyukf.com/res/img/companyLogo/blmn.png',
                       'commodityInfoUrl': 'http://www.qiyukf.com',
