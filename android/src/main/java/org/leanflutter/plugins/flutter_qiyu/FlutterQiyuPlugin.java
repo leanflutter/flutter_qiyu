@@ -1,4 +1,4 @@
-package org.blankapp.flutterplugins.flutter_qiyu;
+package org.leanflutter.plugins.flutter_qiyu;
 
 import android.content.Context;
 import android.content.Intent;

@@ -1,6 +1,6 @@
 class QYUserInfoParams {
-  String userId;
-  String data;
+  String? userId;
+  String? data;
 
   QYUserInfoParams({
     this.userId,
@@ -8,7 +8,7 @@ class QYUserInfoParams {
   });
 
   factory QYUserInfoParams.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null;
+    if (json == null) return null!;
     return QYUserInfoParams(
       userId: json['userId'],
       data: json['data'],

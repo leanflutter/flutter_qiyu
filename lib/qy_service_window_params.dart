@@ -2,13 +2,13 @@ import './qy_commodity_info.dart';
 import './qy_source.dart';
 
 class QYServiceWindowParams {
-  QYSource source;
-  QYCommodityInfo commodityInfo;
+  QYSource? source;
+  QYCommodityInfo? commodityInfo;
 
-  String sessionTitle;
+  String? sessionTitle;
   int groupId;
   int staffId;
-  int robotId;
+  int? robotId;
   bool robotFirst;
   int faqTemplateId;
   int vipLevel;
@@ -30,7 +30,7 @@ class QYServiceWindowParams {
   });
 
   factory QYServiceWindowParams.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null;
+    if (json == null) return null!;
     return QYServiceWindowParams(
       source: QYSource.fromJson(json['source']),
       commodityInfo: QYCommodityInfo.fromJson(json['commodityInfo']),
@@ -49,9 +49,9 @@ class QYServiceWindowParams {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = new Map();
     if (source != null)
-      json.putIfAbsent('source', () => source.toJson());
+      json.putIfAbsent('source', () => source!.toJson());
     if (commodityInfo != null)
-      json.putIfAbsent('commodityInfo', () => commodityInfo.toJson());
+      json.putIfAbsent('commodityInfo', () => commodityInfo!.toJson());
     if (sessionTitle != null)
       json.putIfAbsent('sessionTitle', () => sessionTitle);
     if (groupId != null)

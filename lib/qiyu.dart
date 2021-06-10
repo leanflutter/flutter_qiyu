@@ -35,7 +35,7 @@ class QiYuMethodCallHandler {
       default:
         throw new UnsupportedError("Unrecognized Method");
     }
-    return null;
+    return null!;
   }
 }
 
@@ -56,7 +56,7 @@ class QiYu {
     _methodCallHandler.register(listener);
   }
 
-  static Future<bool> registerApp({String appKey, String appName}) async {
+  static Future<bool> registerApp({String? appKey, String? appName}) async {
     _channel.setMethodCallHandler(_methodCallHandler.handler);
 
     return await _channel.invokeMethod('registerApp', {

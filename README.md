@@ -53,7 +53,7 @@ AndroidManifest.xml
 
 ```diff
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.blankapp.flutterplugins.flutter_qiyu_example">
+    package="org.leanflutter.plugins.flutter_qiyu_example">
 
     ...
 
@@ -73,9 +73,9 @@ AndroidManifest.xml
 MainApplication.java
 
 ```java
-package org.blankapp.flutterplugins.flutter_qiyu_example;
+package org.leanflutter.plugins.flutter_qiyu_example;
 
-import org.blankapp.flutterplugins.flutter_qiyu.FlutterQiyuPlugin;
+import org.leanflutter.plugins.flutter_qiyu.FlutterQiyuPlugin;
 
 import io.flutter.app.FlutterApplication;
 
@@ -172,7 +172,7 @@ https://github.com/qiyukf/react-native-qiyu#-setcustomuiconfig
 ```
 MIT License
 
-Copyright (c) 2020 LiJianying <lijy91@foxmail.com>
+Copyright (c) 2021 LiJianying <lijy91@foxmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

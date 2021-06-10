@@ -1,6 +1,6 @@
-package org.blankapp.flutterplugins.flutter_qiyu_example;
+package org.leanflutter.plugins.flutter_qiyu_example;
 
-import org.blankapp.flutterplugins.flutter_qiyu.FlutterQiyuPlugin;
+import org.leanflutter.plugins.flutter_qiyu.FlutterQiyuPlugin;
 
 import io.flutter.app.FlutterApplication;
 

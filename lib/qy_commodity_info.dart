@@ -1,11 +1,11 @@
 class QYCommodityInfo {
-  String commodityInfoTitle;
-  String commodityInfoDesc;
-  String pictureUrl;
-  String commodityInfoUrl;
-  String note;
-  bool show;
-  bool sendByUser;
+  String? commodityInfoTitle;
+  String? commodityInfoDesc;
+  String? pictureUrl;
+  String? commodityInfoUrl;
+  String? note;
+  bool? show;
+  bool? sendByUser;
 
   QYCommodityInfo({
     this.commodityInfoTitle,
@@ -18,7 +18,7 @@ class QYCommodityInfo {
   });
 
   factory QYCommodityInfo.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null;
+    if (json == null) return null!;
     return QYCommodityInfo(
       commodityInfoTitle: json['commodityInfoTitle'],
       commodityInfoDesc: json['commodityInfoDesc'],

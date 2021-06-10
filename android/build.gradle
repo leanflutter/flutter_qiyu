@@ -1,4 +1,4 @@
-group 'org.blankapp.flutterplugins.flutter_qiyu'
+group 'org.leanflutter.plugins.flutter_qiyu'
 version '1.0'
 
 buildscript {
@@ -22,11 +22,10 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
-        minSdkVersion 16
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdkVersion 19
     }
     lintOptions {
         disable 'InvalidPackage'

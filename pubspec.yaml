@@ -1,12 +1,12 @@
 name: flutter_qiyu
-description: Qiyu plugin for Flutter.
-version: 0.0.1
+description: 适用于 Flutter 的七鱼客服插件
+version: 0.0.2
 author: LiJianying <lijy91@foxmail.com>
-homepage: https://github.com/blankapp/flutter_qiyu
+homepage: https://github.com/leanflutter/flutter_qiyu
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.10.0"
+  sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.20.0"
 
 dependencies:
   flutter:
@@ -28,7 +28,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: org.blankapp.flutterplugins.flutter_qiyu
+        package: org.leanflutter.plugins.flutter_qiyu
         pluginClass: FlutterQiyuPlugin
       ios:
         pluginClass: FlutterQiyuPlugin

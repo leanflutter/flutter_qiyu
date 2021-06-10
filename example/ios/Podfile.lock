@@ -10,7 +10,7 @@ DEPENDENCIES:
   - flutter_qiyu (from `.symlinks/plugins/flutter_qiyu/ios`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - QIYU_iOS_SDK
 
 EXTERNAL SOURCES:
@@ -20,10 +20,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_qiyu/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_qiyu: 9da113ac9a0ac33a6d0818da4d39b26521eb9058
   QIYU_iOS_SDK: 9ba830b3f9c88c46ddd81a758c59c370eaeadc8e
 
-PODFILE CHECKSUM: f32fb4e7c14f8b3ca19a369d7be425dd9241af27
+PODFILE CHECKSUM: 8e679eca47255a8ca8067c4c67aab20e64cb974d
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.1
