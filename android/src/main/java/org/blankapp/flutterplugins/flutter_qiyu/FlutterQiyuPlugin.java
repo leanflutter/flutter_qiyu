@@ -7,8 +7,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.netease.nimlib.sdk.RequestCallback;
-import com.netease.nimlib.sdk.StatusBarNotificationConfig;
+import com.qiyukf.nimlib.sdk.RequestCallback;
+import com.qiyukf.nimlib.sdk.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.ConsultSource;
 import com.qiyukf.unicorn.api.OnBotEventListener;
 import com.qiyukf.unicorn.api.ProductDetail;
