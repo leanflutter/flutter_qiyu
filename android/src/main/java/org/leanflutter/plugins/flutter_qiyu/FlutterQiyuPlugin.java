@@ -107,8 +107,9 @@ public class FlutterQiyuPlugin implements FlutterPlugin, MethodCallHandler {
             result.success(true);
         } else if (call.method.equals("getUnreadCount")) {
             this.getUnreadCount(call, result);
+            result.success(true);
         } else if (call.method.equals("setUserInfo")) {
-            this.setUserInfo(call);
+            this.setUserInfo(call, result);
         } else if (call.method.equals("logout")) {
             this.logout();
         } else if (call.method.equals("cleanCache")) {
@@ -273,11 +274,10 @@ public class FlutterQiyuPlugin implements FlutterPlugin, MethodCallHandler {
 
     private void getUnreadCount(MethodCall call, Result result) {
         int count = Unicorn.getUnreadCount();
-
         result.success(count);
     }
 
-    private void setUserInfo(MethodCall call) {
+    private void setUserInfo(MethodCall call, final Result result) {
         String userId = call.argument("userId");
         String data = call.argument("data");
         YSFUserInfo userInfo = new YSFUserInfo();
@@ -287,17 +287,18 @@ public class FlutterQiyuPlugin implements FlutterPlugin, MethodCallHandler {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("FLUTTER_QIYU", "SUCCESS");
+                result.success(true);
             }
 
             @Override
             public void onFailed(int i) {
                 Log.d("FLUTTER_QIYU", "I");
+                result.error("failed" + i, "", null);
             }
 
             @Override
             public void onException(Throwable throwable) {
-
-
+                result.error("error", throwable.toString(), throwable);
             }
         });
     }

@@ -18,7 +18,6 @@ class QYCommodityInfo {
   });
 
   factory QYCommodityInfo.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null!;
     return QYCommodityInfo(
       commodityInfoTitle: json['commodityInfoTitle'],
       commodityInfoDesc: json['commodityInfoDesc'],

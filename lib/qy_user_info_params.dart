@@ -8,7 +8,6 @@ class QYUserInfoParams {
   });
 
   factory QYUserInfoParams.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null!;
     return QYUserInfoParams(
       userId: json['userId'],
       data: json['data'],

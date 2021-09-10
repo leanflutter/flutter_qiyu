@@ -30,10 +30,11 @@ class QYServiceWindowParams {
   });
 
   factory QYServiceWindowParams.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null!;
     return QYServiceWindowParams(
       source: QYSource.fromJson(json['source']),
-      commodityInfo: QYCommodityInfo.fromJson(json['commodityInfo']),
+      commodityInfo: json.containsKey('commodityInfo')
+          ? QYCommodityInfo.fromJson(json['commodityInfo'])
+          : null,
       sessionTitle: json['sessionTitle'],
       groupId: json['groupId'],
       staffId: json['staffId'],
@@ -48,24 +49,18 @@ class QYServiceWindowParams {
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = new Map();
-    if (source != null)
-      json.putIfAbsent('source', () => source!.toJson());
+    if (source != null) json.putIfAbsent('source', () => source!.toJson());
     if (commodityInfo != null)
       json.putIfAbsent('commodityInfo', () => commodityInfo!.toJson());
     if (sessionTitle != null)
       json.putIfAbsent('sessionTitle', () => sessionTitle);
-    if (groupId != null)
-      json.putIfAbsent('groupId', () => groupId);
-    if (staffId != null)
-      json.putIfAbsent('staffId', () => staffId);
-    if (robotId != null)
-      json.putIfAbsent('robotId', () => robotId);
-    if (robotFirst != null)
-      json.putIfAbsent('robotFirst', () => robotFirst);
+    if (groupId != null) json.putIfAbsent('groupId', () => groupId);
+    if (staffId != null) json.putIfAbsent('staffId', () => staffId);
+    if (robotId != null) json.putIfAbsent('robotId', () => robotId);
+    if (robotFirst != null) json.putIfAbsent('robotFirst', () => robotFirst);
     if (faqTemplateId != null)
       json.putIfAbsent('faqTemplateId', () => faqTemplateId);
-    if (vipLevel != null)
-      json.putIfAbsent('vipLevel', () => vipLevel);
+    if (vipLevel != null) json.putIfAbsent('vipLevel', () => vipLevel);
     if (showQuitQueue != null)
       json.putIfAbsent('showQuitQueue', () => showQuitQueue);
     if (showCloseSessionEntry != null)

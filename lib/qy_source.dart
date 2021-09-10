@@ -10,7 +10,6 @@ class QYSource {
   });
 
   factory QYSource.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null!;
     return QYSource(
       sourceTitle: json['sourceTitle'],
       sourceUrl: json['sourceUrl'],
