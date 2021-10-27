@@ -1,7 +1,6 @@
 name: flutter_qiyu
 description: 适用于 Flutter 的七鱼客服插件
-version: 0.0.2
-author: LiJianying <lijy91@foxmail.com>
+version: 0.0.3
 homepage: https://github.com/leanflutter/flutter_qiyu
 
 environment:
