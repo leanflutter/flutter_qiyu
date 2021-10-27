@@ -1,3 +1,7 @@
+## 0.0.3
+
+- [#7](https://github.com/leanflutter/flutter_qiyu/issues/7) 修复Android端编译错误的问题
+
 ## 0.0.2
 
 - 空安全支持
