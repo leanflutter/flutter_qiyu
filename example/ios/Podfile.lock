@@ -20,10 +20,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_qiyu/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
-  flutter_qiyu: 9da113ac9a0ac33a6d0818da4d39b26521eb9058
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_qiyu: 4f207ad53f72e330e163c489dc63b5ff5b71545e
   QIYU_iOS_SDK: 9ba830b3f9c88c46ddd81a758c59c370eaeadc8e
 
-PODFILE CHECKSUM: 8e679eca47255a8ca8067c4c67aab20e64cb974d
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
