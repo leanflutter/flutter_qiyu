@@ -1,6 +1,6 @@
 name: flutter_qiyu
 description: 适用于 Flutter 的七鱼客服插件
-version: 0.0.3
+version: 0.1.0
 homepage: https://github.com/leanflutter/flutter_qiyu
 
 environment:
@@ -14,6 +14,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

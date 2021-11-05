@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <QIYU_iOS_SDK/QYSDK.h>
+#import <QYSDK/QYSDK.h>
 #import "FlutterQiyuPlugin.h"
 #import "UIBarButtonItem+blocks.h"
 

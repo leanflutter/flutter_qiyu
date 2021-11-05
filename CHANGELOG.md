@@ -1,6 +1,10 @@
+## 0.1.0
+
+- [#7](https://github.com/leanflutter/flutter_qiyu/issues/7) 修复 iOS 端编译错误问题
+
 ## 0.0.3
 
-- [#7](https://github.com/leanflutter/flutter_qiyu/issues/7) 修复Android端编译错误的问题
+- [#6](https://github.com/leanflutter/flutter_qiyu/issues/6) 修复 Android 端编译错误的问题
 
 ## 0.0.2
 
