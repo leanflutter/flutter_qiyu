@@ -27,7 +27,7 @@
 
 ```yaml
 dependencies:
-  flutter_qiyu: ^0.1.0
+  flutter_qiyu: ^0.1.1
 ```
 
 您可以从命令行安装软件包：

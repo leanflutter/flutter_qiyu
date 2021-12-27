@@ -72,6 +72,8 @@ public class FlutterQiyuPlugin implements FlutterPlugin, MethodCallHandler {
     private UnreadCountChangeListener unreadCountChangeListener = new UnreadCountChangeListener() {
         @Override
         public void onUnreadCountChange(int unreadCount) {
+            if (channel == null) return;
+
             Map<String, Object> map = new HashMap<>();
             map.put("unreadCount", unreadCount);
 
