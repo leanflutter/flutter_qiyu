@@ -36,7 +36,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 public class FlutterQiyuPlugin implements FlutterPlugin, MethodCallHandler {
     private static final String CHANNEL_NAME = "flutter_qiyu";
 
-    public static void initSDK(Context context, String appKey) {
+    public static void config(Context context, String appKey) {
         YSFOptions ysfOptions = new YSFOptions();
         ysfOptions.statusBarNotificationConfig = new StatusBarNotificationConfig();
         ysfOptions.onBotEventListener = new OnBotEventListener() {
@@ -50,15 +50,7 @@ public class FlutterQiyuPlugin implements FlutterPlugin, MethodCallHandler {
         // 如果项目中使用了 Glide 可以通过设置 gifImageLoader 去加载 gif 图片
         ysfOptions.gifImageLoader = new GlideGifImagerLoader(context);
 
-        Unicorn.init(context.getApplicationContext(), appKey, ysfOptions, new GlideImageLoader(context));
-    }
-
-    /**
-     * Plugin registration.
-     */
-    public static void registerWith(Registrar registrar) {
-        final FlutterQiyuPlugin plugin = new FlutterQiyuPlugin();
-        plugin.setupChannel(registrar.messenger(), registrar.activeContext());
+        Unicorn.config(context.getApplicationContext(), appKey, ysfOptions, new GlideImageLoader(context));
     }
 
     /// The MethodChannel that will the communication between Flutter and native Android
@@ -109,7 +101,6 @@ public class FlutterQiyuPlugin implements FlutterPlugin, MethodCallHandler {
             result.success(true);
         } else if (call.method.equals("getUnreadCount")) {
             this.getUnreadCount(call, result);
-            result.success(true);
         } else if (call.method.equals("setUserInfo")) {
             this.setUserInfo(call, result);
         } else if (call.method.equals("logout")) {
@@ -122,22 +113,7 @@ public class FlutterQiyuPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     private void registerApp(String appKey, String appName) {
-        if (ysfOptions == null) {
-            ysfOptions = new YSFOptions();
-            ysfOptions.statusBarNotificationConfig = new StatusBarNotificationConfig();
-            ysfOptions.onBotEventListener = new OnBotEventListener() {
-                @Override
-                public boolean onUrlClick(Context context, String url) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    context.startActivity(intent);
-                    return true;
-                }
-            };
-            // 如果项目中使用了 Glide 可以通过设置 gifImageLoader 去加载 gif 图片
-            ysfOptions.gifImageLoader = new GlideGifImagerLoader(this.context);
-        }
-
-        Unicorn.init(this.context.getApplicationContext(), appKey, ysfOptions, new GlideImageLoader(this.context));
+        Unicorn.initSdk();
         Unicorn.addUnreadCountChangeListener(unreadCountChangeListener, true);
     }
 
