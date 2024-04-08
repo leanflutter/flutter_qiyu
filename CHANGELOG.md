@@ -1,3 +1,7 @@
+## 0.1.2
+
+- 更换新版七鱼sdk #16
+
 ## 0.1.1
 
 - 修复 Android 端 `channel.invokeMethod` 未初始化完成前被调用的问题
