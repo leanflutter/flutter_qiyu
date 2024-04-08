@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
         body: Center(
           child: Column(
             children: <Widget>[
-              FlatButton(
+              MaterialButton(
                 child: Text('联系客服'),
                 onPressed: () {
                   QYUserInfoParams userInfoParams = QYUserInfoParams.fromJson({

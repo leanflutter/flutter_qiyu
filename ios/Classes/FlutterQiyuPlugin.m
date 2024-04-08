@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import <NIMSDK/NIMSDK.h>
 #import <QYSDK/QYSDK.h>
 #import "FlutterQiyuPlugin.h"
 #import "UIBarButtonItem+blocks.h"
@@ -8,6 +9,9 @@
 
 @implementation FlutterQiyuPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
+    // 高版本ios需要配置以下两行才能发送图片
+    [NIMSDK sharedSDK].serverSetting.nosUploadAddress = @"https://nosup-hz1.127.net";
+    [NIMSDK sharedSDK].serverSetting.nosUploadHost = @"nosup-hz1.127.net";
     FlutterMethodChannel* channel = [FlutterMethodChannel
                                      methodChannelWithName:@"flutter_qiyu"
                                      binaryMessenger:[registrar messenger]];

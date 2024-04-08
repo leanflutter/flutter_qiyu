@@ -114,6 +114,7 @@ public class FlutterQiyuPlugin implements FlutterPlugin, MethodCallHandler {
 
     private void registerApp(String appKey, String appName) {
         Unicorn.initSdk();
+        config(context, appKey);
         Unicorn.addUnreadCountChangeListener(unreadCountChangeListener, true);
     }
 
